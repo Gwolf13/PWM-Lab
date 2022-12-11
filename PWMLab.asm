@@ -1,4 +1,9 @@
-; Fun with pulse width modulation 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; Title: PWM1
+; Team Members: Emmanuel Bastidas, Gwendolyn Wolf, Zahra Ziaee
+;
+; Desc: Loop dimming a LED in RA4 from full ON to full OFF
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; 
     
 #include <xc.inc>
 #include "pic16f18875.inc" 
@@ -34,8 +39,6 @@
  j EQU 71H ; global data
  onCount EQU 72H ; Store the on time on memory 72
  offCount EQU 73H ; Store the off time on memory 73 
- k EQU 74H
- 
  
  PSECT res_vect, class=CODE, delta=2
 res_vect:
@@ -71,40 +74,8 @@ Start:
     ; Set all the pins RA0-RA7 as logic lows 
     banksel LATA  ; move to the data bank that contains LATA register
     clrf    LATA  ; clear all the bits in the register which sets RA0-RA7 as logic lows
-    bcf    LATA, 4  ; set ra3 to high(sets selelct  pin to high)
-    
-    banksel ANSELC
-    clrf ANSELC
-    banksel PORTC
-    clrf PORTC
-    banksel TRISC
-    clrf TRISC
-    banksel LATC
-    clrf LATC
-    bsf TRISC,5
-    
-    banksel LATA
-    bsf LATA, 4 ; going to lit up RA4
-    
-    ;movlw 0x05	; blink light 5 times then wait 
-    ;movwf k	; Set k as our counter
-;CountDown: 
- ;   banksel LATA
-  ;  bsf	    LATA, 4 ; turn 4 on
-   ; bcf	    LATA, 5 ; turn off 5
-    ;call    DELAY
-    ;bcf	    LATA, 4 ; turn 4 off
-    ;bsf	    LATA, 5 ; turn 5 on
-    ;call    DELAY
-    ;decfsz k, F  ; decrement j until it gets to zero
-    ;goto CountDown
-    
-    ;banksel LATA
-    ;bsf	    LATA, 4 ; I'm going to light up RA4
-StayLit: 
-    banksel PORTC ; the port tells us the status
-    btfsc PORTC,5 ; This checks the bit
-    goto StayLit
+    bcf    LATA, 4  ; set ra4 to high(sets selelct  pin to high)
+  
     
 BeginPWM:
     movlw 0xff	  ; The only way to do a load immediate is two steps
@@ -168,11 +139,6 @@ DELAY1:
     goto DELAY1	  ;  Delay loop
     return
    
-;DELAY:
-    ;decfsz 	j, 	F 	; Decrement and skip next instruction on 0
-    ;goto 	DELAY 	; Delay loop
-    ;decfsz 	i, 	F 	; Decrement and skip next instruction on 0
-   ; goto 	DELAY 	; Delay loop
-    ;return
+
 
 
